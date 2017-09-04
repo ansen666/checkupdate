@@ -1,10 +1,13 @@
 package com.ansen.checkupdate.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,18 +24,24 @@ import com.ansen.http.net.RequestDataCallback;
 import io.github.lizhangqu.coreprogress.ProgressUIListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    private TextView tvCurrentVersionCode;
     private ProgressDialog progressDialog;
+    private String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private final int PERMS_REQUEST_CODE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvCurrentVersionCode= (TextView) findViewById(R.id.tv_current_version_code);
+        TextView tvCurrentVersionCode= (TextView) findViewById(R.id.tv_current_version_code);
         tvCurrentVersionCode.setText("当前版本:"+ Utils.getVersionCode(this));
 
-        findViewById(R.id.btn_check_update).setOnClickListener(this);
+        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1&&
+                PackageManager.PERMISSION_GRANTED!=checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){//Android 6.0以上版本需要获取临时权限
+            requestPermissions(perms,PERMS_REQUEST_CODE);
+        }else{
+            findViewById(R.id.btn_check_update).setOnClickListener(this);
+        }
     }
 
     @Override
@@ -48,9 +57,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void dataCallback(CheckUpdate obj) {
             if(obj!=null){
-                if(obj.getErrorCode()==0){
+                if(obj.getErrorCode()==0){//有新版本
                     showUpdaloadDialog(obj.getUrl());
-                }else{
+                }else{//没有新版本
                     Toast.makeText(MainActivity.this,obj.getErrorReason(),Toast.LENGTH_LONG).show();
                 }
             }
@@ -123,5 +132,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse("file://"+fileSavePath),"application/vnd.android.package-archive");
         startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults){
+        switch(permsRequestCode){
+            case PERMS_REQUEST_CODE:
+                boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if(storageAccepted){
+                    findViewById(R.id.btn_check_update).setOnClickListener(this);
+                }
+                break;
+
+        }
     }
 }

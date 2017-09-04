@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
-import android.util.Log;
 
 /**
  * Created by  ansen
@@ -21,10 +20,11 @@ public class Utils {
         int version = 0;
         try {
             PackageManager packageManager = ctx.getPackageManager();
-            // getPackageName()是你当前类的包名，0代表是获取版本信息
+            //getPackageName()是你当前程序的包名
             PackageInfo packInfo = packageManager.getPackageInfo(ctx.getPackageName(), 0);
             version = packInfo.versionCode;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return version;
     }
@@ -36,7 +36,7 @@ public class Utils {
      */
     public static String getSaveFilePath(String fileUrl){
         String fileName=fileUrl.substring(fileUrl.lastIndexOf("/")+1,fileUrl.length());//获取文件名称
-        String newFilePath= Environment.getExternalStorageDirectory() + "/download/"+fileName;
+        String newFilePath= Environment.getExternalStorageDirectory() + "/Download/"+fileName;
         return newFilePath;
     }
 }
