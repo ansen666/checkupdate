@@ -131,13 +131,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param fileSavePath
      */
     private void openAPK(String fileSavePath){
-//        Intent intent = new Intent();
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.setAction(Intent.ACTION_VIEW);
-//        FileProvider.getUriForFile()
-//        intent.setDataAndType(Uri.parse("file://"+fileSavePath),"application/vnd.android.package-archive");
-//        startActivity(intent);
-
         File file=new File(fileSavePath);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri data;
