@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,8 @@ import com.ansen.checkupdate.entity.CheckUpdate;
 import com.ansen.checkupdate.utils.Utils;
 import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.RequestDataCallback;
+
+import java.io.File;
 
 import io.github.lizhangqu.coreprogress.ProgressUIListener;
 
@@ -127,10 +131,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param fileSavePath
      */
     private void openAPK(String fileSavePath){
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse("file://"+fileSavePath),"application/vnd.android.package-archive");
+//        Intent intent = new Intent();
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setAction(Intent.ACTION_VIEW);
+//        FileProvider.getUriForFile()
+//        intent.setDataAndType(Uri.parse("file://"+fileSavePath),"application/vnd.android.package-archive");
+//        startActivity(intent);
+
+        File file=new File(fileSavePath);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//判断版本大于等于7.0
+            // "com.ansen.checkupdate.fileprovider"即是在清单文件中配置的authorities
+            // 通过FileProvider创建一个content类型的Uri
+            data = FileProvider.getUriForFile(this, "com.ansen.checkupdate.fileprovider", file);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);// 给目标应用一个临时授权
+        } else {
+            data = Uri.fromFile(file);
+        }
+        intent.setDataAndType(data, "application/vnd.android.package-archive");
         startActivity(intent);
     }
 

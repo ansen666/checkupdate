@@ -13,7 +13,7 @@ android {
     }
     buildTypes {
         release {
-            debuggable false
+            debuggable true
             minifyEnabled false  //true:打混淆包  false:不混淆
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
