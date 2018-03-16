@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView tvCurrentVersionCode= (TextView) findViewById(R.id.tv_current_version_code);
         tvCurrentVersionCode.setText("当前版本:"+ Utils.getVersionCode(this));
 
+        //Android 6.0以上版本需要临时获取权限
         if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1&&
-                PackageManager.PERMISSION_GRANTED!=checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){//Android 6.0以上版本需要获取临时权限
+                PackageManager.PERMISSION_GRANTED!=checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             requestPermissions(perms,PERMS_REQUEST_CODE);
         }else{
             findViewById(R.id.btn_check_update).setOnClickListener(this);
