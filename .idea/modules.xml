@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/checkupdate.iml" filepath="$PROJECT_DIR$/checkupdate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/checkupdate.iml" filepath="$PROJECT_DIR$/.idea/modules/checkupdate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/checkupdate.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/checkupdate.app.iml" />
     </modules>
   </component>
 </project>

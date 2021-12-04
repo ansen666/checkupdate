@@ -2,27 +2,25 @@ package com.ansen.checkupdate.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.ansen.checkupdate.R;
 import com.ansen.checkupdate.entity.CheckUpdate;
 import com.ansen.checkupdate.utils.Utils;
 import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.RequestDataCallback;
-
 import java.io.File;
 
 import io.github.lizhangqu.coreprogress.ProgressUIListener;
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView tvCurrentVersionCode= (TextView) findViewById(R.id.tv_current_version_code);
+        TextView tvCurrentVersionCode= findViewById(R.id.tv_current_version_code);
         tvCurrentVersionCode.setText("当前版本:"+ Utils.getVersionCode(this));
 
         //Android 6.0以上版本需要临时获取权限
